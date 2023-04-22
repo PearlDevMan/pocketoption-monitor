@@ -18,4 +18,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       message,
     });
   }
+  if (request.type === 'MODECHANGE' && sender.tab === 'Pop') {
+    console.log('Mode is changed')
+    sendResponse({});
+  }
 });

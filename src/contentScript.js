@@ -13,11 +13,11 @@
 
 // Log `title` of current active web page
 const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
-const divdata = document.body.getElementsByClassName('deals-list__item')[0].innerHTML;
+
 console.log(
   `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
 );
-console.log(divdata);
+//console.log(divdata);
 
 // Communicate with background file by sending a message
 chrome.runtime.sendMessage(
@@ -31,6 +31,19 @@ chrome.runtime.sendMessage(
     console.log(response.message);
   }
 );
+
+chrome.runtime.document.addEventListener('DOMContentLoaded', readContent);
+
+function readContent(){
+  console.log('++++')
+  const castDiv = document.querySelector('div.deals-list__item');
+  console.log(castDiv);
+}
+
+// chrome.tabs.executeScript({
+//   const castDiv = document.querySelector('div.deals-list__item');
+//   console.log(castDiv);
+// })
 
 // Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

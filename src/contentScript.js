@@ -33,18 +33,6 @@ chrome.runtime.sendMessage(
 );
 
 
-
-function readContent(){
-  console.log('++++')
-  const castDiv = document.querySelector('div.deals-list__item');
-  console.log(castDiv);
-}
-
-// chrome.tabs.executeScript({
-  const castDiv = document.querySelector('div.scrollbar-container.deals-list.ps');
-  console.log(castDiv);
-// })
-
 // Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'COUNT') {
@@ -62,7 +50,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       // do something after the page has loaded
       setTimeout(function() {
         setInterval(function() {
-          
+
           const castDiv = document.querySelector('div.scrollbar-container.deals-list.ps');
           const tradeDiv = castDiv.querySelectorAll('div.deals-list__item');
           if(tradeDiv.length){
@@ -87,9 +75,23 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 console.log(sendData);
               }
             }
-            
+            // create a new WebSocket object
+            const ws = new WebSocket('wss://example.com/myendpoint');
+
+            // send the JSON data as a string
+            ws.send(JSON.stringify(sendData));
+
+            // send the JSON data as a string
+            ws.send(JSON.stringify(data));
+
+            // listen for messages from the server
+            ws.onmessage = function (event) {
+              // process the response data
+              const response = JSON.parse(event.data);
+              console.log(response);
+            };
           }
-        }, 0.5 * 1000);
+        }, 0.6 * 1000);
       }, 1000); // wait 1 second after DOM is ready before starting the interval
   }
 });

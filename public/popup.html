@@ -2,25 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Chrome Extension</title>
+    <title>Pocket Option Monitor</title>
     <link rel="stylesheet" href="popup.css" />
+    <script src="popup.js"></script>
 </head>
-<body>
+<body background="./image/background.webp">
   <div class="app">
     <h1>Pocket Option Monitor</h1>
-    <input id="endPoint" ></input>
-    <!-- <p class="counter-label">Counter</p>
     <div class="button-container">
-      <button id="controlBtn" class="button" value="Run"></button>
+      <p class="title">I am Ready!</p>
+
+      <label for="connectionURL">Input api url</label>
+      <input id="connectionURL" type="text" required/>
+      <hr>
+      <label for="sessionID">Input session</label>
+      <input id="sessionID" type="text" required/>
+      <button id="controlBtn" class="button" value="Submit">Submit</button>
     </div>
 
     <hr class="divider" />
 
-    <p class="title">Chrome Extension is Ready!</p>
-    <p class="subtitle">Start by updating <code>popup.html</code></p> -->
+    <p class="subtitle">Created by Alex</p>
+
   </div>
 
-  <script src="popup.js"></script>
+  
 
   <!--
     This HTML file opens when you click on icon from the toolbar.

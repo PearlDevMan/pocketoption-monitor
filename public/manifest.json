@@ -3,6 +3,7 @@
   "name": "Pocket_option",
   "$schema": "https://json.schemastore.org/chrome-manifest.json",
   "version": "0.1.0",
+  "devtools_page": "devtools.html",
   "description": "My Chrome Extension",
   "icons": {
     "16": "icons/icon_16.png",
@@ -18,8 +19,14 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "debugger",
+    "http://*/*",
+    "https://*/*",
+    "webRequest",
+    "webRequestBlocking"
   ],
+
   "content_scripts": [
     {
       "matches": [

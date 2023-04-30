@@ -1,0 +1,123 @@
+isTrusted
+: 
+true
+bubbles
+: 
+false
+cancelBubble
+: 
+false
+cancelable
+: 
+false
+composed
+: 
+false
+currentTarget
+: 
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+data
+: 
+{source: 'react-devtools-bridge', payload: {…}}
+defaultPrevented
+: 
+false
+eventPhase
+: 
+0
+lastEventId
+: 
+""
+origin
+: 
+"https://pocketoption.com"
+ports
+: 
+[]
+returnValue
+: 
+true
+source
+: 
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+srcElement
+: 
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+target
+: 
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+timeStamp
+: 
+49432
+type
+: 
+"message"
+userActivation
+: 
+null
+[[Prototype]]
+: 
+MessageEvent
+
+
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  // if (request.message === 'page_loaded') {
+  //   let tempData = [];
+  //     // do something after the page has loaded
+  //     setTimeout(function() {
+  //       setInterval(function() {
+
+  //         const castDiv = document.querySelector('div.scrollbar-container.deals-list.ps');
+  //         const tradeDiv = castDiv.querySelectorAll('div.deals-list__item');
+          
+  //         if(tradeDiv.length){
+  //           let sendData = [];
+  //           for(let item=0; item<tradeDiv.length; item++){
+  //             //if(tradeDiv[item].querySelectorAll('div.item-row')[0].querySelectorAll('div')[1].innerHTML === '00:01'){
+  //               function getDirection() {
+  //                 if(tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('i.fa.fa-arrow-up').length) return true;
+  //                 if(tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('i.fa.fa-arrow-down').length) return false;
+  //               }
+                
+  //               const tradeData = {
+  //                 contactType: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelector('div').querySelectorAll('a')[1].innerHTML,
+  //                 // priceupPercent: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelector('div').querySelector('span.price-up').innerHTML,
+  //                 expiredTime: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelectorAll('div')[1].innerHTML,
+  //                 // tradeAmount: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelector('div').textContent,
+  //                 // afterIncome: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('div')[1].innerHTML,
+  //                 // net: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('div')[2].innerHTML,
+  //                 direction: getDirection(),
+  //                 error: '',
+  //               }
+  //               sendData.push(tradeData);
+  //           }
+
+  //           if(!arraysEqual( sendData, tempData)){
+  //             tempData = [...sendData];
+  //             console.log(sendData)            
+  //           }         
+
+
+
+
+            
+  //           // // create a new WebSocket object
+  //           // const ws = new WebSocket('wss://example.com/myendpoint');
+
+  //           // // send the JSON data as a string
+  //           // ws.send(JSON.stringify(sendData));
+
+  //           // // send the JSON data as a string
+  //           // ws.send(JSON.stringify(data));
+
+  //           // // listen for messages from the server
+  //           // ws.onmessage = function (event) {
+  //           //   // process the response data
+  //           //   const response = JSON.parse(event.data);
+  //           //   console.log(response);
+  //           // };
+  //         }
+  //       }, 0.2 * 1000);
+  //     }, 1000); // wait 1 second after DOM is ready before starting the interval
+  // }
+// });

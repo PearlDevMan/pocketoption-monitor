@@ -17,7 +17,6 @@ const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
 console.log(
   `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
 );
-//console.log(divdata);
 
 // Communicate with background file by sending a message
 chrome.runtime.sendMessage(
@@ -32,67 +31,139 @@ chrome.runtime.sendMessage(
   }
 );
 
-
+var creditData = {
+  connectionURL: '',
+  sessionID: ''
+}
 // Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
+  if (request.type === 'credit') {
+      creditData.connectionURL = request.payload.connectionURL
+      creditData.sessionID = request.payload.sessionID
+      connection(creditData.connectionURL, creditData.sessionID)
   }
-
   // Send an empty response
   // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-  sendResponse({});
+  sendResponse({reply: 'OK'});
   return true;
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.message === 'page_loaded') {
-      // do something after the page has loaded
-      setTimeout(function() {
-        setInterval(function() {
+var socket
 
-          const castDiv = document.querySelector('div.scrollbar-container.deals-list.ps');
-          const tradeDiv = castDiv.querySelectorAll('div.deals-list__item');
-          if(tradeDiv.length){
-            let sendData = [];
-            for(let item=0; item<tradeDiv.length; item++){
-              if(tradeDiv[item].querySelectorAll('div.item-row')[0].querySelectorAll('div')[1].innerHTML === '00:01'){
-                function getDirection() {
-                  if(tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('i.fa.fa-arrow-up').length) return true;
-                  if(tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('i.fa.fa-arrow-down').length) return false;
-                }
-                const tradeData = {
-                  contactType: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelector('div').querySelectorAll('a')[1].innerHTML,
-                  // priceupPercent: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelector('div').querySelector('span.price-up').innerHTML,
-                  expiredTime: tradeDiv[item].querySelectorAll('div.item-row')[0].querySelectorAll('div')[1].innerHTML,
-                  // tradeAmount: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelector('div').textContent,
-                  // afterIncome: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('div')[1].innerHTML,
-                  // net: tradeDiv[item].querySelectorAll('div.item-row')[1].querySelectorAll('div')[2].innerHTML,
-                  direction: getDirection(),
-                  error: '',
-                }
-                sendData.push(tradeData);
-                console.log(sendData);
+function connection(connectionUrl, sessionId){
+  
+  socket = new WebSocket(connectionUrl);
+  socket.binaryType = 'arraybuffer'
+  // when the WebSocket connection is opened
+  socket.addEventListener('open', event => {
+    console.log('WebSocket connection opened');
+  });
+
+  // when the WebSocket receives a message
+  socket.addEventListener('message', event => {
+    if(event.data instanceof ArrayBuffer || event.data instanceof Blob) {
+      // This is a binary message
+      // console.log('Received binary data');
+      const dataView = new DataView(event.data);
+      let temp = []
+      for(let l = 0; l < dataView.byteLength; l++){
+        temp.push(dataView.getUint8(l));
+      }
+      const uint8Array = new Uint8Array(temp);
+      const decoder = new TextDecoder('utf-8');
+      const stringData = decoder.decode(uint8Array);
+      try {
+        let sendSocket = []
+        const obj = JSON.parse(stringData);
+        if ( obj.deals !== undefined ){
+          const deals = obj.deals;
+          let temp = {
+            raw_event: {
+              binary_optionChanged1: {
+                curreny: 'USD',
+                direction: '',
+                result: 'closed',
+                amount: ''
               }
-            }
-            // create a new WebSocket object
-            const ws = new WebSocket('wss://example.com/myendpoint');
-
-            // send the JSON data as a string
-            ws.send(JSON.stringify(sendData));
-
-            // send the JSON data as a string
-            ws.send(JSON.stringify(data));
-
-            // listen for messages from the server
-            ws.onmessage = function (event) {
-              // process the response data
-              const response = JSON.parse(event.data);
-              console.log(response);
-            };
+            },
+            instrument_id: '',
+            status: 'close',
+            id: ''
           }
-        }, 0.6 * 1000);
-      }, 1000); // wait 1 second after DOM is ready before starting the interval
-  }
-});
+          for(let deal=0; deal<deals.length; deal++){
+            temp.id = deals[deal].id;
+            temp.instrument_id = removeOtcFromString(deals[deal].asset);
+            temp.raw_event.binary_optionChanged1.direction = getDirection(deals[deal].command);
+            temp.raw_event.binary_optionChanged1.amount = deals[deal].amount;
+            sendSocket.push(temp)
+          }
+        }
+        else if (obj.asset !== undefined && obj.candles === undefined){
+          let temp = {
+            raw_event: {
+              binary_optionChanged1: {
+                curreny: 'USD',
+                direction: '',
+                result: 'opened',
+                amount: ''
+              }
+            },
+            instrument_id: '',
+            status: 'open',
+            id: ''
+          }
+          temp.id = obj.id
+          temp.instrument_id = removeOtcFromString(obj.asset)
+          temp.raw_event.binary_optionChanged1.direction = getDirection(obj.command)
+          temp.raw_event.binary_optionChanged1.amount = obj.amount
+          sendSocket.push(temp)
+        }
+        if(sendSocket.length){ 
+          console.log(sendSocket) 
 
+
+          // const endPoint = new WebSocket('http://164.92.198.80:3000')
+          // endPoint.send(JSON.stringify(sendSocket))
+
+
+        }
+        // the string represents a valid object
+      } catch (e) {
+        console.log(e)
+      }
+      
+    } else {
+      // This may be a text message
+      const message = event.data;
+    
+      if (message.includes('sid')){
+        if (message.includes('pingTimeout')){
+          socket.send('40')
+        }
+        else {
+          socket.send(sessionId)
+        }
+      }
+      // else console.log(message)
+      
+    }
+
+  });
+
+  // when the WebSocket connection is closed
+  socket.addEventListener('close', event => {
+    console.log('WebSocket connection closed, trying to reconnect...');
+    setTimeout(function() {
+      connection(creditData.connectionURL,creditData.sessionID);
+      }, 300);
+  });
+}
+
+function removeOtcFromString(str) {
+  return str.replace(/_otc/g, '');
+}
+
+function getDirection(dir) {
+  if(dir) return "put"
+  return "call"
+}

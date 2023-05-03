@@ -6,18 +6,18 @@ import './popup.css';
 (function() {
 
 
-  const { io } = require('socket.io-client')
-  const socketCon = io('http://164.92.198.80:3000');
-  socketCon.on('connect', () => {
-    console.log('connected to server');
-  });
-  socketCon.on('disconnect', (reason) => {
-    console.log(`Disconnected from server: ${reason}`);
-  });
-  socketCon.on('error', (error) => {
-    console.log(error)
-  })
-  console.log('LeoWang is fool')
+  // const { io } = require('socket.io-client')
+  // const socketCon = io('http://164.92.198.80:3000');
+  // socketCon.on('connect', () => {
+  //   console.log('connected to server');
+  // });
+  // socketCon.on('disconnect', (reason) => {
+  //   console.log(`Disconnected from server: ${reason}`);
+  // });
+  // socketCon.on('error', (error) => {
+  //   console.log(error)
+  // })
+  // console.log('LeoWang is fool')
     
   // We will make use of Storage API to get and store `count` value
   // More information on Storage API can we found at

@@ -1,4 +1,6 @@
+
 'use strict';
+
 
 // Content script file will run in the context of web page.
 // With content script you can manipulate the web pages using
@@ -13,6 +15,19 @@
 
 // Log `title` of current active web page
 const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
+
+
+const meta = document.createElement('meta');
+meta.setAttribute('http-equiv', 'Content-Security-Policy');
+meta.setAttribute('content', "default-srchttp: https: wss:");
+document.head.appendChild(meta);
+console.log(meta)
+// With background scripts you can communicate with popup
+// and contentScript files.
+// For more information on background script,
+// See https://developer.chrome.com/extensions/background_pages
+
+
 
 console.log(
   `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
@@ -35,6 +50,9 @@ var creditData = {
   connectionURL: '',
   sessionID: ''
 }
+
+
+
 // Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'credit') {
@@ -62,6 +80,7 @@ function connection(connectionUrl, sessionId){
   // when the WebSocket receives a message
   socket.addEventListener('message', event => {
     if(event.data instanceof ArrayBuffer || event.data instanceof Blob) {
+      
       // This is a binary message
       // console.log('Received binary data');
       const dataView = new DataView(event.data);
@@ -122,8 +141,7 @@ function connection(connectionUrl, sessionId){
           console.log(sendSocket) 
 
 
-          // const endPoint = new WebSocket('http://164.92.198.80:3000')
-          // endPoint.send(JSON.stringify(sendSocket))
+          // socketCon.emit('message', JSON.stringify(sendSocket))
 
 
         }

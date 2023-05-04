@@ -1,8 +1,10 @@
 'use strict';
 
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'GREETINGS') {
     const message = `Hi ${
       sender.tab ? 'Con' : 'Pop'

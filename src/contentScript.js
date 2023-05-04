@@ -16,21 +16,6 @@
 // Log `title` of current active web page
 const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
 
-<<<<<<< HEAD
-
-const meta = document.createElement('meta');
-meta.setAttribute('http-equiv', 'Content-Security-Policy');
-meta.setAttribute('content', "default-srchttp: https: wss:");
-document.head.appendChild(meta);
-console.log(meta)
-// With background scripts you can communicate with popup
-// and contentScript files.
-// For more information on background script,
-// See https://developer.chrome.com/extensions/background_pages
-
-
-
-=======
 const meta = document.createElement('meta');
 meta.setAttribute('http-equiv', 'Content-Security-Policy');
 meta.setAttribute('content', 'upgrade-insecure-requests');
@@ -194,7 +179,6 @@ const symbols = [
   { symbol: 'USDSGD', id: 892 },
   { symbol: 'USDHKD', id: 893 }
 ];
->>>>>>> 090b02883afed20137a7d5d3c0dbb1337dd12328
 console.log(
   `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
 );
@@ -304,25 +288,11 @@ function connection(connectionUrl, sessionId){
           }
           temp.id = obj.id
           temp.instrument_id = removeOtcFromString(obj.asset)
-<<<<<<< HEAD
-          temp.raw_event.binary_optionChanged1.direction = getDirection(obj.command)
-          temp.raw_event.binary_optionChanged1.amount = obj.amount
-          sendSocket.push(temp)
-        }
-        if(sendSocket.length){ 
-          console.log(sendSocket) 
-
-
-          // socketCon.emit('message', JSON.stringify(sendSocket))
-
-
-=======
           temp.raw_event.binary_options_option_changed1.direction = getDirection(obj.command)
           temp.raw_event.binary_options_option_changed1.amount = obj.amount
           console.log(temp)
           
           socketCon.emit('send-trade', temp)
->>>>>>> 090b02883afed20137a7d5d3c0dbb1337dd12328
         }
         // if(sendSocket.length){ 
         //   console.log(sendSocket) 

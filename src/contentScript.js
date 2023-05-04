@@ -1,6 +1,4 @@
-
 'use strict';
-
 
 // Content script file will run in the context of web page.
 // With content script you can manipulate the web pages using
@@ -231,7 +229,6 @@ function connection(connectionUrl, sessionId){
   // when the WebSocket receives a message
   socket.addEventListener('message', event => {
     if(event.data instanceof ArrayBuffer || event.data instanceof Blob) {
-      
       // This is a binary message
       // console.log('Received binary data');
       const dataView = new DataView(event.data);

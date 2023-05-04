@@ -5,7 +5,6 @@
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
   if (request.type === 'GREETINGS') {
     const message = `Hi ${
       sender.tab ? 'Con' : 'Pop'

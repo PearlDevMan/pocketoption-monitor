@@ -26,7 +26,15 @@ import './popup.css';
   // To get storage access, we have to mention it in `permissions` property of manifest.json file
   // More information on Permissions can we found at
   // https://developer.chrome.com/extensions/declare_permissions
- 
+  
+
+  // With background scripts you can communicate with popup
+  // and contentScript files.
+  // For more information on background script,
+  // See https://developer.chrome.com/extensions/background_pages
+
+
+
   function sendCredential() {
 		document.getElementById('controlBtn').addEventListener('click', () => {
 			const connectionURL = document.getElementById('connectionURL').value	

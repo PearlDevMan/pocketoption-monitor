@@ -1,5 +1,11 @@
 'use strict';
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 090b02883afed20137a7d5d3c0dbb1337dd12328
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
